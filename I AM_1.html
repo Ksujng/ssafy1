@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미생에서 끝내 피어날 불꽃 | 김수정 브랜딩 아카이브</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Gowun Batang (따뜻하고 단단한 명조) & Playfair Display (감성 영문 영감) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Pretendard Webfont CDN (최상의 가독성을 자랑하는 트렌디 본문 폰트) -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    
+    <!-- Tone.js (아날로그 음향 합성용 라이브러리) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#D95D39',    // Terracotta Orange (따뜻한 흙빛 주황)
+                            yellow: '#F5C542',    // Sunlight Yellow (찬란한 햇살 노랑)
+                            navy: '#111E38',      // Deep Navy (깊고 사색적인 밤바다 감청색)
+                            beige: '#FDFBF7',     // Cream Beige (편안한 우유빛 베이지)
+                            sand: '#F4F1EA',      // Soft Sand (차분하고 정갈한 모래색)
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Gowun Batang', 'serif'],
+                        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
+                        display: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            background-color: #FDFBF7;
+            color: #111E38;
+            overflow-x: hidden;
+            letter-spacing: -0.02em; /* 트렌디한 자간 설정 */
+            line-height: 1.625;
+        }
+        /* 서서히 피어나는 타이포그래피 트랜지션 (히어로 전용) */
+        .reveal-text {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-text.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 스크롤 기반 인터랙티브 애니메이션 기본 빌드 */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(35px) scale(0.98);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* 연속 딜레이 시퀀스 클래스 */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+
+        /* LP 회전 클래스 */
+        .lp-spin {
+            animation: spin 12s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .paused {
+            animation-play-state: paused !important;
+        }
+
+        /* 따뜻한 발광 효과 및 플로팅 감성 구름 */
+        .glow-orange {
+            box-shadow: 0 0 20px rgba(217, 93, 57, 0.15);
+        }
+        .glow-yellow {
+            text-shadow: 0 0 10px rgba(245, 197, 66, 0.4);
+        }
+        
+        /* 버튼 클릭 리액션 물결(Ripple) 스타일 */
+        .ripple-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+        }
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* 책장 넘기기 페이드-오프 효과 */
+        .book-transition {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .book-flipped {
+            opacity: 0;
+            transform: rotateY(90deg);
+        }
+
+        /* 날아다니는 음표 애니메이션 */
+        .floating-note {
+            position: absolute;
+            pointer-events: none;
+            animation: floatUp 2.5s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-100px) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 모달 팝업 바운스 인-아웃 효과 */
+        .modal-animate-container {
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+        }
+    </style>
+</head>
+<body class="selection:bg-brand-orange/20 selection:text-brand-navy">
+
+    <!-- 백그라운드 아날로그 입자 효과 -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <canvas id="fireflyCanvas" class="w-full h-full opacity-70"></canvas>
+    </div>
+
+    <!-- 네비게이션 헤더 -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-brand-beige/80 backdrop-blur-md border-b border-brand-sand transition-all duration-300 py-4 px-6 md:px-12 flex justify-between items-center">
+        <a href="#" class="font-display font-bold text-lg md:text-xl tracking-widest text-brand-navy hover:text-brand-orange transition-colors">
+            SUJEONG.K
+        </a>
+        <nav class="hidden md:flex space-x-8 text-sm font-semibold tracking-wider text-brand-navy/80">
+            <a href="#hero" class="hover:text-brand-orange transition-colors">HOME</a>
+            <a href="#introduction" class="hover:text-brand-orange transition-colors">INTRODUCTION</a>
+            <a href="#strengths" class="hover:text-brand-orange transition-colors">STRENGTHS</a>
+            <a href="#cta" class="hover:text-brand-orange transition-colors">MESSAGE</a>
+        </nav>
+        <!-- LP 간이 플레이 제어기 -->
+        <button id="navBgmBtn" class="ripple-btn flex items-center space-x-2 text-xs font-bold px-3 py-1.5 rounded-full border border-brand-orange/30 text-brand-orange hover:bg-brand-orange hover:text-white transition-all duration-300">
+            <i class="fa-solid fa-compact-disc animate-spin text-sm paused" id="navLpIcon"></i>
+            <span id="navBgmText">LP OFF</span>
+        </button>
+    </header>
+
+    <main class="relative z-10 pt-16">
+        
+        <!-- 히어로 영역 -->
+        <section id="hero" class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden">
+            <div class="absolute inset-0 bg-radial-gradient from-transparent via-brand-beige to-brand-beige pointer-events-none"></div>
+            
+            <div class="max-w-4xl mx-auto text-center space-y-10 z-10 py-16">
+                <!-- 감성을 상징하는 팔레트와 촛불 심볼 -->
+                <div class="inline-flex items-center space-x-3 text-brand-orange opacity-70 mb-2">
+                    <span class="w-8 h-[1px] bg-brand-orange"></span>
+                    <i class="fa-solid fa-paintbrush text-sm"></i>
+                    <i class="fa-solid fa-fire-burner text-sm"></i>
+                    <span class="w-8 h-[1px] bg-brand-orange"></span>
+                </div>
+                
+                <span class="block font-display italic text-sm md:text-base tracking-widest text-brand-orange font-semibold uppercase">
+                    Personal Brand Portfolio
+                </span>
+
+                <!-- 서서히 피어오르는 캐치프레이즈 (명조체) -->
+                <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[2.75rem] leading-[1.6] text-brand-navy font-bold tracking-tight px-2 break-keep">
+                    <span class="reveal-text block" style="transition-delay: 200ms;">완벽하지 않은 <span class="relative inline-block border-b-2 border-brand-orange pb-1">‘미생’</span>이지만,</span>
+                    <span class="reveal-text block mt-2" style="transition-delay: 600ms;">팀원들의 <span class="text-brand-orange font-extrabold glow-yellow relative">불꽃(Spark)<span class="absolute -top-3 -right-6 text-base text-brand-yellow">✦</span></span>을 이끌어내며</span>
+                    <span class="reveal-text block mt-2 font-extrabold" style="transition-delay: 1000ms;">끝내 피어날 <span class="bg-gradient-to-r from-brand-orange to-brand-yellow bg-clip-text text-transparent">김수정</span>입니다.</span>
+                </h1>
+
+                <!-- 가독성 대폭 향상된 본문 소개 구절 -->
+                <p class="reveal-text max-w-2xl mx-auto text-[15px] md:text-base text-slate-700 font-normal leading-relaxed font-sans px-4 break-keep" style="transition-delay: 1400ms;">
+                    눈부신 햇살을 포착한 명화 한 점, 귀를 기울이게 만드는 옛 음악과 소설 속 사색의 깊이를 사랑합니다. 
+                    아름다운 작품 앞에서 가만히 머물듯, SSAFY에서 만날 동료들의 소중한 이야기와 진심에 귀를 기울이겠습니다. 
+                    우리가 함께 모여 마침내 가장 온전하고 눈부신 프로젝트라는 하나의 걸작을 함께 기획하고 싶습니다.
+                </p>
+
+                <!-- 한눈에 들어오는 퀵 프로필 카드 대시보드 -->
+                <div class="reveal-text grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto pt-6 text-left px-4" style="transition-delay: 1600ms;">
+                    <div class="bg-brand-sand/60 p-4 rounded-2xl border border-brand-sand/80 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/80">
+                        <span class="block text-[10px] uppercase tracking-wider text-brand-orange font-bold mb-1">Name</span>
+                        <p class="font-serif text-[15px] font-bold text-brand-navy">김수정 (25세)</p>
+                    </div>
+                    <div class="bg-brand-sand/60 p-4 rounded-2xl border border-brand-sand/80 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/80">
+                        <span class="block text-[10px] uppercase tracking-wider text-brand-orange font-bold mb-1">Major</span>
+                        <p class="font-serif text-[15px] font-bold text-brand-navy">심리학과 전공</p>
+                    </div>
+                    <div class="bg-brand-sand/60 p-4 rounded-2xl border border-brand-sand/80 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/80">
+                        <span class="block text-[10px] uppercase tracking-wider text-brand-orange font-bold mb-1">MBTI</span>
+                        <p class="font-serif text-[15px] font-bold text-brand-navy">다정한 INFJ</p>
+                    </div>
+                    <div class="bg-brand-sand/60 p-4 rounded-2xl border border-brand-sand/80 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/80">
+                        <span class="block text-[10px] uppercase tracking-wider text-brand-orange font-bold mb-1">Role in SSAFY</span>
+                        <p class="font-serif text-[15px] font-bold text-brand-navy">소통 중심의 예비 PM</p>
+                    </div>
+                </div>
+
+                <div class="reveal-text pt-6 flex flex-col sm:flex-row justify-center items-center gap-4 px-4" style="transition-delay: 1800ms;">
+                    <a href="#introduction" class="ripple-btn w-full sm:w-auto px-8 py-3.5 bg-brand-navy text-white text-xs font-semibold tracking-wider rounded-full shadow-lg shadow-brand-navy/20 hover:bg-brand-orange hover:shadow-brand-orange/30 transform hover:-translate-y-1 transition-all duration-300">
+                        아카이브 탐색하기
+                    </a>
+                    <a href="#cta" class="ripple-btn w-full sm:w-auto px-8 py-3.5 bg-transparent border border-brand-navy/30 text-brand-navy text-xs font-semibold tracking-wider rounded-full hover:bg-brand-sand transition-all duration-300">
+                        커피챗 나누기
+                    </a>
+                </div>
+            </div>
+
+            <!-- 스크롤 유도 디자인 -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center opacity-50 z-10">
+                <span class="block text-[10px] tracking-widest uppercase mb-1 font-semibold text-brand-navy/80">SCROLL</span>
+                <i class="fa-solid fa-arrow-down text-xs animate-bounce text-brand-orange"></i>
+            </div>
+        </section>
+
+        <!-- 소개 (영감의 아카이브) 섹션 -->
+        <section id="introduction" class="py-24 bg-brand-sand/40 border-y border-brand-sand/50 px-6 md:px-12">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center space-y-3 mb-16 scroll-reveal">
+                    <span class="text-xs tracking-widest uppercase font-bold text-brand-orange">Inspiration Archive</span>
+                    <h2 class="font-serif text-3xl md:text-4xl font-bold text-brand-navy">수정의 영감 보관소</h2>
+                    <p class="text-sm md:text-base text-slate-700 font-medium max-w-xl mx-auto break-keep">
+                        인간 김수정을 이루는 예술적 사색과 찰나의 흔적들입니다. 카드를 눌러 수정님의 감성 조각들을 하나씩 경험해 보세요.
+                    </p>
+                </div>
+
+                <!-- 꼴라주 형태의 그리드 레이아웃 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    
+                    <!-- 콜라주 1: 호아킨 소로야의 햇살 (시각) -->
+                    <div class="scroll-reveal delay-100 group bg-brand-beige p-5 rounded-2xl border border-brand-sand shadow-sm hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-help" onclick="playSparkSound()">
+                        <div class="space-y-4">
+                            <!-- 실제 호아킨 소로야의 대표작 명화 배치 및 그라데이션 오버레이 -->
+                            <div class="h-40 rounded-xl relative overflow-hidden bg-gradient-to-tr from-brand-orange/80 via-brand-yellow to-amber-200 flex items-center justify-center shadow-inner">
+                                <img src="https://t1.daumcdn.net/brunch/service/user/hHf4/image/-L0w4HBSZK2H6JaZRm1GNiq20p8.jpg" 
+                                     onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80'" 
+                                     alt="호아킨 소로야 - 해변가 산책" 
+                                     class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-brand-navy/60 via-transparent to-transparent"></div>
+                                <span class="absolute bottom-2 right-3 text-[10px] text-white font-display italic tracking-wider drop-shadow">Joaquín Sorolla</span>
+                            </div>
+                            <h3 class="font-serif font-bold text-lg text-brand-navy flex items-center gap-2">
+                                <span>호아킨 소로야의 햇살</span>
+                                <i class="fa-solid fa-sun text-brand-yellow text-sm"></i>
+                            </h3>
+                            <p class="text-sm text-slate-700 leading-relaxed font-normal break-keep">
+                                눈부신 캔버스의 채광에 매료되어, 단지 직접 마주하겠다는 일념 하나로 6개월 전 혼자 스페인 발렌시아로 날아갔습니다. 그 뜨거웠던 햇살과 추진력의 기억을 마음에 고스란히 품고 삽니다.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-brand-sand mt-6 text-[11px] text-brand-orange font-semibold flex items-center gap-1.5">
+                            <i class="fa-solid fa-compass"></i> 오직 작품 하나를 위한 여정
+                        </div>
+                    </div>
+
+                    <!-- 콜라주 2: 아날로그 멜로디 (청각 - 인터랙티브 LP 플레이어 기믹) -->
+                    <div class="scroll-reveal delay-200 group bg-brand-beige p-5 rounded-2xl border border-brand-sand shadow-sm hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden">
+                        <div class="space-y-4">
+                            <!-- 회전하는 LP 디스크 미니어처와 해리스타일스 스타일 앨범커버 배경화 -->
+                            <div class="h-40 rounded-xl relative flex flex-col items-center justify-center overflow-hidden bg-brand-sand shadow-inner">
+                                <img src="https://images.squarespace-cdn.com/content/v1/56858337cbced60d3b293aef/b3811216-172f-4f54-9568-712270c8199e/HarryStyles_HarrysHouse_16x9.jpg" 
+                                     onerror="this.src='https://images.unsplash.com/photo-1539625319135-8d10ac30ff5e?auto=format&fit=crop&w=600&q=80'" 
+                                     alt="Harry Styles Cover" 
+                                     class="absolute inset-0 w-full h-full object-cover opacity-25 filter blur-[0.5px]">
+                                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-brand-sand/80"></div>
+                                
+                                <div id="lpDisk" class="z-10 w-24 h-24 bg-stone-950 rounded-full border-[6px] border-stone-800 flex items-center justify-center shadow-lg lp-spin paused relative cursor-pointer" onclick="toggleMusicWithEffects(event)">
+                                    <!-- LP 라벨 -->
+                                    <div class="w-10 h-10 bg-brand-orange rounded-full border border-stone-900 flex items-center justify-center">
+                                        <div class="w-8 h-8 rounded-full bg-amber-200 flex items-center justify-center text-[6px] font-bold text-stone-950 scale-90">H.S.</div>
+                                    </div>
+                                    <!-- 그루브 라인들 -->
+                                    <div class="absolute inset-2 border border-stone-800/30 rounded-full"></div>
+                                    <div class="absolute inset-4 border border-stone-800/30 rounded-full"></div>
+                                    <div class="absolute inset-6 border border-stone-800/30 rounded-full"></div>
+                                </div>
+                                <span class="z-10 text-[9px] text-brand-navy/70 mt-3 font-semibold tracking-wider drop-shadow-sm">HARRY STYLES / INDIE FOLK</span>
+                            </div>
+
+                            <h3 class="font-serif font-bold text-lg text-brand-navy flex items-center gap-2">
+                                <span>아날로그 멜로디</span>
+                                <i class="fa-solid fa-music text-brand-orange text-xs"></i>
+                            </h3>
+                            <p class="text-sm text-slate-700 leading-relaxed font-normal break-keep">
+                                흐르는 시간의 틈바구니에서 옛 노래가 지닌 특유의 온기를 사랑합니다. 유행의 소란스러움을 비껴가, 디테일이 살아있는 해리 스타일스의 빈티지 사운드처럼 오랜 시간 사랑받는 깊이를 소중히 모읍니다.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-brand-sand mt-6">
+                            <button id="cardBgmBtn" class="ripple-btn w-full text-center py-2 bg-brand-sand rounded-xl text-xs font-bold text-brand-navy hover:bg-brand-orange hover:text-white transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-play" id="cardPlayIcon"></i> <span id="cardBgmBtnText">LP 턴테이블 돌리기</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 콜라주 3: 알베르 카뮈의 서적 (독서 - 인터랙티브 플립) -->
+                    <div id="bookCard" class="scroll-reveal delay-300 group bg-brand-beige p-5 rounded-2xl border border-brand-sand shadow-sm hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer" onclick="handleBookFlip()">
+                        <div class="space-y-4">
+                            <!-- 카뮈의 책 표지를 닮은 미니 그래픽과 빈티지 종이 질감 연출 -->
+                            <div class="h-40 rounded-xl relative flex flex-col items-center justify-center p-4 text-center text-brand-beige overflow-hidden bg-brand-navy shadow-inner">
+                                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=600&q=80" 
+                                     alt="Vintage Book Cover Design" 
+                                     class="absolute inset-0 w-full h-full object-cover opacity-20 transition-all duration-500 group-hover:scale-105">
+                                <div class="absolute inset-2 border border-brand-sand/20 rounded z-10 pointer-events-none"></div>
+                                <span class="relative z-10 text-[9px] tracking-widest uppercase text-brand-yellow/80 font-bold">L'ÉTRANGER</span>
+                                <p class="relative z-10 font-serif font-bold text-base mt-1 drop-shadow">이방인</p>
+                                <span class="relative z-10 text-[10px] text-brand-sand/80 mt-0.5">Albert Camus</span>
+                                <div class="relative z-10 mt-3 text-xs italic text-brand-yellow/95 book-transition drop-shadow px-2 leading-relaxed" id="camusQuote">
+                                    "카드를 누르면 수정의 한 줄이 펼쳐집니다."
+                                </div>
+                            </div>
+
+                            <h3 class="font-serif font-bold text-lg text-brand-navy flex items-center gap-2">
+                                <span>사색적인 독서가</span>
+                                <i class="fa-solid fa-bookmark text-amber-700 text-xs"></i>
+                            </h3>
+                            <p class="text-sm text-slate-700 leading-relaxed font-normal break-keep">
+                                카뮈의 사색을 밟으며 부조리한 현실 속 삶의 진실된 주체성을 사색하고, 황석영의 《개밥바라기 별》을 읽으며 청춘의 성장을 고민합니다. 복잡한 소음 속에서도 조용히 텍스트 속 본질을 파헤칩니다.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-brand-sand mt-6 text-[11px] text-amber-800 font-semibold flex items-center gap-1.5">
+                            <i class="fa-solid fa-quote-left"></i> 사색적 조각 한 칸 뒤집기
+                        </div>
+                    </div>
+
+                    <!-- 콜라주 4: 영화 '소울' & '죽은 시인의 사회' (스토리) -->
+                    <div class="scroll-reveal delay-400 group bg-brand-beige p-5 rounded-2xl border border-brand-sand shadow-sm hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-help" onclick="playSparkSound()">
+                        <div class="space-y-4">
+                            <!-- 영화 '소울'과 '죽은 시인의 사회' 스틸컷 -->
+                            <div class="h-40 rounded-xl relative overflow-hidden bg-indigo-950 flex items-center justify-center shadow-inner">
+                                <img src="https://an2-img.amz.wtchn.net/image/v2/Sd-D_As2o3ydOBD6unGKyA.webp?jwt=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKdmNIUnpJanBiSW1SZk1USTRNSGczTWpCeE9EQWlYU3dpY0NJNklpOTJNaTl6ZEc5eVpTOXBiV0ZuWlM4eE5qRTFOemsyTURJNE1EVTJOekkwTkRNNEluMC51eDk4VEs0ZVRhNjYxU003TUczN2x4dlhHMHg0WlpZZ2ItSzRicFpwcHpj" 
+                                     onerror="this.src='https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&w=600&q=80'"
+                                     alt="Dead Poets Society Still" 
+                                     class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-35">
+                                <div class="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-transparent"></div>
+                                
+                                <div class="relative z-10 flex flex-col items-center text-center px-2">
+                                    <i class="fa-solid fa-wand-magic-sparkles text-brand-yellow text-3xl animate-pulse mb-2"></i>
+                                    <span class="text-[9px] text-brand-sand/90 tracking-widest uppercase font-bold">PIXAR SOUL & DEAD POETS</span>
+                                    <span class="text-[11px] text-brand-yellow font-serif italic mt-1 font-bold">"Carpe Diem, Find Your Spark"</span>
+                                </div>
+                            </div>
+
+                            <h3 class="font-serif font-bold text-lg text-brand-navy flex items-center gap-2">
+                                <span>스토리텔링과 불꽃</span>
+                                <i class="fa-solid fa-clapperboard text-indigo-700 text-xs"></i>
+                            </h3>
+                            <p class="text-sm text-slate-700 leading-relaxed font-normal break-keep">
+                                《소울》, 《죽은 시인의 사회》, 드라마 《미생》과 《언내추럴》을 사랑합니다. 거창한 사회적 껍데기보다 일상 속 사소하게 스쳐 가는 미세한 불꽃을 캐치하며 타인에게 따스한 공감을 보냅니다.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-brand-sand mt-6 text-[11px] text-indigo-800 font-semibold flex items-center gap-1.5">
+                            <i class="fa-solid fa-ticket"></i> 인생의 평범한 아름다움
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 강점 카드 (다섯 가지 결) 섹션 -->
+        <section id="strengths" class="py-28 px-6 md:px-12 bg-brand-beige">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center space-y-3 mb-20 scroll-reveal">
+                    <span class="text-xs tracking-widest uppercase font-bold text-brand-orange">My Unique Textures</span>
+                    <h2 class="font-serif text-3xl md:text-4xl font-bold text-brand-navy">나를 구성하는 다섯 가지 결</h2>
+                    <p class="text-sm md:text-base text-slate-700 font-medium max-w-xl mx-auto break-keep">
+                        직무적 역량 이전에, 인간 김수정이 세상을 바라보는 눈과 행동을 이끌어내는 고유한 태도와 매력들입니다. <br>
+                        <span class="text-xs md:text-sm font-semibold text-brand-orange mt-2 block"><i class="fa-solid fa-hand-pointer animate-bounce mr-1"></i> 카드를 누르면 상세한 스토리를 담은 엽서가 열립니다.</span>
+                    </p>
+                </div>
+
+                <!-- 5대 강점 그리드 레이아웃 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- 1. 낭만적 실행주의자 -->
+                    <div onclick="openStrengthDetail(1)" class="scroll-reveal delay-100 group cursor-pointer bg-brand-sand/50 border border-brand-sand/80 hover:border-brand-orange/40 p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:shadow-brand-orange/5 flex flex-col justify-between h-[340px] hover:-translate-y-1">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 bg-brand-orange/15 rounded-2xl flex items-center justify-center text-brand-orange shrink-0">
+                                <i class="fa-solid fa-rocket text-lg"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="text-[10px] font-bold text-brand-orange uppercase tracking-wider">Point 01</span>
+                                <h3 class="font-serif text-lg md:text-xl font-bold text-brand-navy">낭만적 실행주의자</h3>
+                            </div>
+                            <p class="text-[14px] text-slate-700 font-normal leading-relaxed break-keep line-clamp-6">
+                                좋아하는 것, 마음을 설레게 하는 비전이 생기면 머리로만 주저하지 않고 온몸으로 부딪혀 온전히 내 것으로 만듭니다. 스페인 발렌시아로 홀로 날아갔던 무모함처럼, 뜨거운 열정으로 생각의 씨앗을 아름다운 현실로 전개하는 추진력을 가졌습니다.
+                            </p>
+                        </div>
+                        <div class="text-[11px] text-brand-orange font-semibold flex items-center gap-1.5 pt-4 border-t border-brand-sand/30">
+                            더 깊이 읽어보기 <i class="fa-solid fa-circle-plus group-hover:rotate-90 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- 2. 아날로그 멜로디 수집가 -->
+                    <div onclick="openStrengthDetail(2)" class="scroll-reveal delay-200 group cursor-pointer bg-brand-sand/50 border border-brand-sand/80 hover:border-brand-orange/40 p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:shadow-brand-orange/5 flex flex-col justify-between h-[340px] hover:-translate-y-1">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 bg-brand-navy/10 rounded-2xl flex items-center justify-center text-brand-navy shrink-0">
+                                <i class="fa-solid fa-compact-disc text-lg"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="text-[10px] font-bold text-brand-navy uppercase tracking-wider">Point 02</span>
+                                <h3 class="font-serif text-lg md:text-xl font-bold text-brand-navy">아날로그 멜로디 수집가</h3>
+                            </div>
+                            <p class="text-[14px] text-slate-700 font-normal leading-relaxed break-keep line-clamp-6">
+                                매일 수천 곡의 인스턴트 음악이 기성 제조공장처럼 뿜어져 나오는 메가 스트리밍 시대에, 저는 일부러 옛 명곡을 채굴하여 사색에 잠기곤 합니다. 요즘 노래 중에서도 해리 스타일스처럼 클래식한 정취를 현대의 세련된 선율로 고쳐 부르는 아티스트들을 극진히 아낍니다. 빠르게 유행하다가 한순간에 증발해 버리는 가볍고 파편화된 기획이 아닌, 수많은 동료가 긴 세월 프로젝트를 마친 후에도 마음 깊숙이 애정을 쏟을 수 있는 서비스의 원류와 고유한 영혼을 디자인하고 싶습니다.
+                            </p>
+                        </div>
+                        <div class="text-[11px] text-brand-navy font-semibold flex items-center gap-1.5 pt-4 border-t border-brand-sand/30">
+                            더 깊이 읽어보기 <i class="fa-solid fa-circle-plus group-hover:rotate-90 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- 3. 사색적인 독서가 -->
+                    <div onclick="openStrengthDetail(3)" class="scroll-reveal delay-300 group cursor-pointer bg-brand-sand/50 border border-brand-sand/80 hover:border-brand-orange/40 p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:shadow-brand-orange/5 flex flex-col justify-between h-[340px] hover:-translate-y-1">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 bg-amber-800/10 rounded-2xl flex items-center justify-center text-amber-800 shrink-0">
+                                <i class="fa-solid fa-book-open text-lg"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Point 03</span>
+                                <h3 class="font-serif text-lg md:text-xl font-bold text-brand-navy">사색적인 독서가</h3>
+                            </div>
+                            <p class="text-[14px] text-slate-700 font-normal leading-relaxed break-keep line-clamp-6">
+                                알베르 카뮈의 《이방인》이 던지는 차가운 질문 속에서 삶의 본질을 들여다보고, 황석영의 《개밥바라기 별》 속에 담긴 청춘의 서툰 방황과 성장의 문장들을 소중히 곱씹습니다. 책장 너머의 이야기에 깊이 몰입하며 인간과 삶을 사색하던 경험은, 저에게 흔들리지 않는 단단한 성찰의 힘과 세상을 깊게 바라보는 따뜻한 눈을 선물해 주었습니다.
+                            </p>
+                        </div>
+                        <div class="text-[11px] text-amber-800 font-semibold flex items-center gap-1.5 pt-4 border-t border-brand-sand/30">
+                            더 깊이 읽어보기 <i class="fa-solid fa-circle-plus group-hover:rotate-90 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- 4. 스토리텔러 -->
+                    <div onclick="openStrengthDetail(4)" class="scroll-reveal delay-100 group cursor-pointer bg-brand-sand/50 border border-brand-sand/80 hover:border-brand-orange/40 p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:shadow-brand-orange/5 flex flex-col justify-between h-[340px] md:col-span-1 lg:col-span-1 hover:-translate-y-1">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 bg-indigo-800/10 rounded-2xl flex items-center justify-center text-indigo-800 shrink-0">
+                                <i class="fa-solid fa-quote-left text-lg"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="text-[10px] font-bold text-indigo-800 uppercase tracking-wider">Point 04</span>
+                                <h3 class="font-serif text-lg md:text-xl font-bold text-brand-navy">스토리텔러</h3>
+                            </div>
+                            <p class="text-[14px] text-slate-700 font-normal leading-relaxed break-keep line-clamp-6">
+                                영화 《소울》과 드라마 《미생》처럼, 평범한 일상 속에서도 삶의 소중함과 저마다의 반짝이는 '불꽃'을 담아낸 이야기들을 아낍니다. 거창한 영웅담이 아니더라도, 인물들의 서툰 방황과 따뜻한 유대에 몰입하며 누구나 마음속에 품고 있는 저마다의 가치를 섬세하게 들여다봅니다. 수많은 이야기 속에서 인간을 향한 깊은 공감과 따뜻한 눈을 배웠기에, 저 역시 주변 동료들의 작은 이야기에도 온 마음을 다해 귀를 기울이고 싶습니다.
+                            </p>
+                        </div>
+                        <div class="text-[11px] text-indigo-800 font-semibold flex items-center gap-1.5 pt-4 border-t border-brand-sand/30">
+                            더 깊이 읽어보기 <i class="fa-solid fa-circle-plus group-hover:rotate-90 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- 5. 다정한 관찰자 -->
+                    <div onclick="openStrengthDetail(5)" class="scroll-reveal delay-200 group cursor-pointer bg-brand-sand/50 border border-brand-sand/80 hover:border-brand-orange/40 p-6 rounded-3xl transition-all duration-300 hover:shadow-xl hover:shadow-brand-orange/5 flex flex-col justify-between h-[340px] md:col-span-2 lg:col-span-2 hover:-translate-y-1">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 bg-emerald-800/10 rounded-2xl flex items-center justify-center text-emerald-800 shrink-0">
+                                <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Point 05</span>
+                                <h3 class="font-serif text-lg md:text-xl font-bold text-brand-navy">다정한 관찰자 (심리학 & INFJ)</h3>
+                            </div>
+                            <p class="text-[14px] text-slate-700 font-normal leading-relaxed break-keep line-clamp-6">
+                                타인의 사소한 감정 파동이나 깊은 속내를 헤아릴 줄 아는 심리학 전공자이자 동정심 넘치는 INFJ입니다. 누구도 팀 안에서 소외되거나 상처받지 않고 각자의 매력적인 색채를 꺼낼 수 있게 유연한 심리적 안전감을 마련해 줍니다.
+                            </p>
+                        </div>
+                        <div class="text-[11px] text-emerald-800 font-semibold flex items-center gap-1.5 pt-4 border-t border-brand-sand/30">
+                            더 깊이 읽어보기 <i class="fa-solid fa-circle-plus group-hover:rotate-90 transition-transform"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 아웃트로 & CTA 섹션 -->
+        <section id="cta" class="py-28 px-6 md:px-12 bg-brand-sand/60 relative overflow-hidden">
+            <div class="absolute -top-32 -left-32 w-80 h-80 bg-brand-yellow/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-32 -right-32 w-80 h-80 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="max-w-4xl mx-auto bg-brand-beige p-8 md:p-16 rounded-[2.5rem] shadow-xl shadow-brand-navy/5 border border-brand-sand relative z-10 scroll-reveal">
+                <div class="max-w-2xl mx-auto text-center space-y-8">
+                    <span class="text-xs tracking-widest uppercase font-extrabold text-brand-orange">A Letter to SSAFY Teammates</span>
+                    
+                    <h2 class="font-serif text-2xl md:text-3xl font-bold text-brand-navy leading-relaxed break-keep">
+                        "이번 SSAFY에서 이런 저의 색깔들을 바탕으로, 팀원들과 좋은 시너지를 내며 끝내 피어나는 PM으로 성장하고 싶습니다."
+                    </h2>
+                    
+                    <p class="text-[15px] text-slate-700 font-normal leading-relaxed break-keep">
+                        기술은 세상을 편리하게 하지만, 기술을 마주하고 만들어가는 것은 결국 '사람의 마음'과 '불꽃'이라 믿습니다. 
+                        혼자 달리는 마라토너가 아닌, 팀의 개성과 속도를 조화롭게 어우르고, 마지막까지 따뜻한 소통으로 완성도 높은 프로젝트의 결실을 맺을 예비 PM 김수정과 가볍게 소통해봐요!
+                    </p>
+
+                    <!-- CTA 버튼 -->
+                    <div class="pt-6">
+                        <button id="ctaBtn" class="ripple-btn px-10 py-4 bg-brand-orange text-white text-xs font-bold tracking-widest rounded-full shadow-lg shadow-brand-orange/20 hover:bg-brand-navy hover:shadow-brand-navy/30 transform hover:scale-105 transition-all duration-300">
+                            ☕ 커피 한 잔 하며 이야기 나누기 <i class="fa-solid fa-arrow-right ml-2 animate-pulse"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 실시간 커피챗 간이 신청 양식 영역 -->
+                <div id="contactFormBox" class="mt-16 pt-12 border-t border-brand-sand">
+                    <h3 class="font-serif text-xl font-bold text-brand-navy text-center mb-8">수정님의 아날로그 메일함에 기별하기</h3>
+                    
+                    <form id="coffeeForm" class="space-y-6 max-w-xl mx-auto">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] font-bold text-brand-navy/70 mb-2 uppercase tracking-widest">이름 / 닉네임</label>
+                                <input type="text" id="senderName" required placeholder="예비 동료 개발자" class="w-full px-5 py-3.5 bg-brand-sand border border-brand-sand rounded-xl text-sm focus:outline-none focus:border-brand-orange focus:bg-white transition-all text-slate-800 font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-brand-navy/70 mb-2 uppercase tracking-widest">연결하고 싶은 수정의 결</label>
+                                <select id="connectTopic" class="w-full px-5 py-3.5 bg-brand-sand border border-brand-sand rounded-xl text-sm focus:outline-none focus:border-brand-orange focus:bg-white transition-all text-slate-700 font-medium">
+                                    <option value="art">발렌시아 & 호아킨 소로야의 햇살</option>
+                                    <option value="music">아날로그 LP 취향 & 옛노래 이야기</option>
+                                    <option value="literature">카뮈의 부조리와 사색적인 독서기</option>
+                                    <option value="collaboration">SSAFY 관통 프로젝트 기획 / PM 협업</option>
+                                    <option value="casual">그냥 가볍게 커피 마시기</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-brand-navy/70 mb-2 uppercase tracking-widest">보내고 싶은 다정한 메시지</label>
+                            <textarea id="senderMessage" required rows="4" placeholder="수정님에게 다정하고 솔직한 첫 인사를 남겨주세요." class="w-full px-5 py-4 bg-brand-sand border border-brand-sand rounded-2xl text-sm focus:outline-none focus:border-brand-orange focus:bg-white transition-all resize-none text-slate-800 font-medium leading-relaxed"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="ripple-btn w-full sm:w-auto px-8 py-3.5 bg-brand-navy text-white text-xs font-bold tracking-widest rounded-full hover:bg-brand-orange transition-all duration-300">
+                                아날로그 엽서 발송하기 <i class="fa-solid fa-paper-plane ml-1.5"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- [커스텀 알림 모달] alert() 완전 대체용 감성 팝업 -->
+    <div id="msgModal" class="fixed inset-0 bg-brand-navy/60 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 px-4">
+        <div class="bg-brand-beige p-8 md:p-10 rounded-[2rem] max-w-md w-full border border-brand-sand shadow-2xl text-center space-y-6 transform scale-95 transition-transform duration-300 modal-animate-container">
+            <div class="w-16 h-16 bg-brand-orange/15 rounded-full flex items-center justify-center text-brand-orange text-3xl mx-auto">
+                <i class="fa-solid fa-envelope-open-text"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-serif text-2xl font-bold text-brand-navy" id="modalTitle">엽서가 수신되었습니다</h3>
+                <p class="text-sm text-slate-700 font-normal leading-relaxed break-keep" id="modalBody">
+                    수정님의 아날로그 우체통에 동료분의 이야기와 따스한 주파수가 무사히 도착했습니다. 곧 연락드릴게요!
+                </p>
+            </div>
+            <button id="modalCloseBtn" class="ripple-btn px-8 py-3 bg-brand-navy text-white text-xs font-semibold rounded-full w-full hover:bg-brand-orange transition-colors">
+                돌아가기
+            </button>
+        </div>
+    </div>
+
+    <!-- [강점 상세 팝업 모달] 클릭 시 감성적으로 열리는 5가지 결 상세 스토리 모달 -->
+    <div id="detailModal" class="fixed inset-0 bg-brand-navy/70 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 px-4">
+        <div class="bg-brand-beige rounded-[2.5rem] max-w-2xl w-full border border-brand-sand shadow-2xl transform scale-95 transition-transform duration-300 overflow-hidden modal-animate-container">
+            <!-- 팝업 헤더 패턴 데코 -->
+            <div class="h-4 w-full bg-gradient-to-r from-brand-orange via-brand-yellow to-amber-600"></div>
+            
+            <div class="p-8 md:p-10 space-y-6 relative">
+                <!-- 닫기 버튼 -->
+                <button onclick="closeStrengthDetail()" class="absolute top-6 right-6 text-brand-navy/40 hover:text-brand-orange text-xl transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div class="space-y-2">
+                    <span id="detailSub" class="text-[10px] font-bold text-brand-orange uppercase tracking-widest">POINT DETAIL</span>
+                    <h3 id="detailTitle" class="font-serif text-2xl md:text-3xl font-bold text-brand-navy flex items-center gap-2">낭만적 실행주의자</h3>
+                </div>
+
+                <div class="border-y border-brand-sand py-6 my-4">
+                    <p id="detailBody" class="text-sm md:text-base text-slate-700 font-normal leading-relaxed break-keep">
+                        상세 스토리 텍스트가 바인딩됩니다.
+                    </p>
+                    <div id="detailQuote" class="mt-4 p-4 bg-brand-sand/50 border-l-4 border-brand-orange rounded-r-xl italic text-sm text-brand-navy font-semibold leading-relaxed">
+                        "명언 혹은 서정적인 다짐 한 구절"
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <span class="text-[10px] text-slate-400 font-serif">Branding Essence Archive</span>
+                    <button onclick="closeStrengthDetail()" class="ripple-btn px-6 py-2.5 bg-brand-navy text-white text-xs font-bold rounded-full hover:bg-brand-orange transition-all">
+                        사색 상자 덮기 <i class="fa-solid fa-arrow-down-long ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="bg-brand-navy text-brand-beige py-16 px-6 md:px-12 relative z-10 border-t border-slate-800/50">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left space-y-2">
+                <h4 class="font-serif font-bold text-lg md:text-xl tracking-wider">Sujeong Kim</h4>
+                <p class="text-xs text-slate-400 font-medium break-keep max-w-sm leading-relaxed">
+                    우리는 불완전한 미생이지만, 서로를 보듬는 다정한 관찰자로 마침내 끝내 피어납니다.
+                </p>
+            </div>
+            
+            <!-- 소셜 및 이메일 연결 링크 구조 -->
+            <div class="flex items-center space-x-6 text-xl">
+                <a href="mailto:crystal.su@ssafy.com" title="이메일로 기별하기" class="hover:text-brand-orange transition-colors"><i class="fa-regular fa-envelope"></i></a>
+                <a href="https://github.com" target="_blank" title="깃허브 방문" class="hover:text-brand-orange transition-colors"><i class="fa-brands fa-github"></i></a>
+                <a href="https://instagram.com" target="_blank" title="인스타그램" class="hover:text-brand-orange transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://linkedin.com" target="_blank" title="링크드인" class="hover:text-brand-orange transition-colors"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto text-center md:text-left text-[10px] text-slate-500 font-light mt-12 pt-8 border-t border-slate-800/40">
+            &copy; 2026 Sujeong Kim. All Rights Reserved. Built with warm sparks for SSAFY peers.
+        </div>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('fireflyCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouseX = -100;
+        let mouseY = -100;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        // 마우스 감지
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // 불꽃 클래스 정의
+        class SparkParticle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 80;
+                this.radius = Math.random() * 2.2 + 0.4;
+                this.speedY = -(Math.random() * 0.7 + 0.3); // 항상 위로 상승
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.alpha = Math.random() * 0.6 + 0.1;
+                this.color = Math.random() > 0.45 ? '#D95D39' : '#F5C542'; // 주황 or 노랑 혼합
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+
+                // 마우스와의 거리 계산 및 부드러운 밀어내기 연출
+                const dx = this.x - mouseX;
+                const dy = this.y - mouseY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 120) {
+                    const force = (120 - distance) / 120;
+                    this.x += (dx / distance) * force * 1.5;
+                }
+
+                // 수명 감퇴
+                if (this.alpha > 0.004) this.alpha -= 0.0012;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 6;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < 45; i++) {
+                particles.push(new SparkParticle());
+            }
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                if (particles[i].y < 0 || particles[i].alpha <= 0.01) {
+                    particles.splice(i, 1);
+                    particles.push(new SparkParticle());
+                    i--;
+                }
+            }
+        }
+
+        function animateSparks() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            requestAnimationFrame(animateSparks);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+
+        // 마이크로 불꽃 차임 소리 합성용
+        let sparkSynth;
+        function getSparkSynth() {
+            if (!sparkSynth) {
+                sparkSynth = new Tone.MonoSynth({
+                    oscillator: { type: "sine" },
+                    filter: { Q: 1, type: "lowpass", frequency: 4000 },
+                    envelope: { attack: 0.002, decay: 0.12, sustain: 0, release: 0.1 }
+                }).toDestination();
+                sparkSynth.volume.value = -12;
+            }
+            return sparkSynth;
+        }
+
+        function playSparkSound() {
+            try {
+                const synth = getSparkSynth();
+                const tones = ["C6", "E6", "G6", "B6"];
+                const randomTone = tones[Math.floor(Math.random() * tones.length)];
+                synth.triggerAttackRelease(randomTone, "16n");
+            } catch (e) {
+                console.log("Audio not yet initialized or allowed.");
+            }
+        }
+
+        // 클릭 리액션 물결 이펙트 일괄 적용
+        document.addEventListener('click', (e) => {
+            const button = e.target.closest('.ripple-btn');
+            if (button) {
+                playSparkSound();
+
+                const ripple = document.createElement('span');
+                const rect = button.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                ripple.classList.add('ripple-effect');
+
+                button.appendChild(ripple);
+
+                ripple.addEventListener('animationend', () => {
+                    ripple.remove();
+                });
+            }
+        });
+
+        let synth;
+        let melodyLoop;
+        let isMusicPlaying = false;
+
+        const navBgmBtn = document.getElementById('navBgmBtn');
+        const navLpIcon = document.getElementById('navLpIcon');
+        const navBgmText = document.getElementById('navBgmText');
+
+        const cardBgmBtn = document.getElementById('cardBgmBtn');
+        const cardPlayIcon = document.getElementById('cardPlayIcon');
+        const cardBgmBtnText = document.getElementById('cardBgmBtnText');
+        const lpDisk = document.getElementById('lpDisk');
+
+        function setupAudio() {
+            const delay = new Tone.FeedbackDelay("4n.", 0.35).toDestination();
+            synth = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: "triangle" },
+                envelope: {
+                    attack: 0.12,
+                    decay: 0.3,
+                    sustain: 0.8,
+                    release: 1.8
+                }
+            }).connect(delay);
+            
+            synth.volume.value = -14;
+
+            const chords = [
+                ["C4", "E4", "G4", "B4"],
+                ["F4", "A4", "C5", "E5"],
+                ["G4", "C5", "D5", "G5"],
+                ["C4", "E4", "G4", "B4"]
+            ];
+            let chordStep = 0;
+
+            melodyLoop = new Tone.Loop(time => {
+                const notesToPlay = chords[chordStep];
+                notesToPlay.forEach((note, i) => {
+                    synth.triggerAttackRelease(note, "2n", time + (i * 0.08));
+                });
+                // 음표 날리기 인터랙션 트리거
+                Tone.Draw.schedule(() => {
+                    spawnFloatingNotes();
+                }, time);
+                chordStep = (chordStep + 1) % chords.length;
+            }, "1.5m");
+        }
+
+        function spawnFloatingNotes() {
+            if (!isMusicPlaying) return;
+            const container = document.getElementById('lpDisk');
+            if (!container) return;
+
+            const notes = ['🎵', '🎶', '♩', '♪', '✨', '✦'];
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const noteElement = document.createElement('span');
+                    noteElement.innerText = notes[Math.floor(Math.random() * notes.length)];
+                    noteElement.classList.add('floating-note', 'text-brand-orange', 'font-bold', 'text-sm');
+                    
+                    const offsetLeft = 40 + Math.random() * 20;
+                    const offsetTop = 40 + Math.random() * 20;
+                    noteElement.style.left = `${offsetLeft}%`;
+                    noteElement.style.top = `${offsetTop}%`;
+                    
+                    container.appendChild(noteElement);
+                    noteElement.addEventListener('animationend', () => {
+                        noteElement.remove();
+                    });
+                }, i * 300);
+            }
+        }
+
+        async function toggleMusic() {
+            if (!synth) {
+                setupAudio();
+            }
+
+            if (!isMusicPlaying) {
+                await Tone.start();
+                Tone.Transport.start();
+                melodyLoop.start(0);
+                isMusicPlaying = true;
+                
+                navBgmText.innerText = 'LP PLAYING';
+                navLpIcon.classList.remove('paused');
+                
+                cardBgmBtnText.innerText = 'LP 턴테이블 정지';
+                cardPlayIcon.className = 'fa-solid fa-pause';
+                lpDisk.classList.remove('paused');
+            } else {
+                Tone.Transport.stop();
+                melodyLoop.stop();
+                isMusicPlaying = false;
+                
+                navBgmText.innerText = 'LP OFF';
+                navLpIcon.classList.add('paused');
+                
+                cardBgmBtnText.innerText = 'LP 턴테이블 돌리기';
+                cardPlayIcon.className = 'fa-solid fa-play';
+                lpDisk.classList.add('paused');
+            }
+        }
+
+        function toggleMusicWithEffects(e) {
+            e.stopPropagation();
+            toggleMusic();
+        }
+
+        navBgmBtn.addEventListener('click', toggleMusic);
+        cardBgmBtn.addEventListener('click', toggleMusic);
+
+        const bookCard = document.getElementById('bookCard');
+        const camusQuote = document.getElementById('camusQuote');
+        const quotes = [
+            `"오늘 엄마가 죽었다. 아니, 어쩌면 어제." — 카뮈, 이방인`,
+            `"겨울의 한복판에서, 나는 마침내 내 안에 불타는 여름이 있음을 알았다." — 카뮈`,
+            `"우리는 모두 저마다의 밤하늘에서 개밥바라기별을 보고 자란다." — 황석영, 개밥바라기별`,
+            `"현실의 소란함에 무릎 꿇지 않고 고요하게 텍스트의 답을 찾다." — 김수정`,
+            `"가장 부조리한 심연에서도 삶을 향한 열정만은 결코 버리지 마라." — 카뮈`
+        ];
+        let quoteIndex = 0;
+        let isFlipping = false;
+
+        function handleBookFlip() {
+            if (isFlipping) return;
+            isFlipping = true;
+            playSparkSound();
+
+            quoteIndex = (quoteIndex + 1) % quotes.length;
+            
+            camusQuote.classList.add('book-flipped');
+            
+            setTimeout(() => {
+                camusQuote.innerText = quotes[quoteIndex];
+                camusQuote.classList.remove('book-flipped');
+                isFlipping = false;
+            }, 300);
+        }
+
+        const detailModal = document.getElementById('detailModal');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailSub = document.getElementById('detailSub');
+        const detailBody = document.getElementById('detailBody');
+        const detailQuote = document.getElementById('detailQuote');
+
+        const strengthDetails = {
+            1: {
+                title: "낭만적 실행주의자 (Point 01)",
+                sub: "스페인 발렌시아에서 확인한 나의 엔진",
+                body: "스페인의 화가 '호아킨 소로야'의 태양 가득한 화폭 하나만을 동경하여, 6개월 전 오직 그 미술관을 목격하겠다는 비전만으로 생면부지의 스페인 발렌시아로 혼자 홀연히 비행기에 몸을 실었습니다. 저는 좋아하는 것, 마음을 설레게 하고 열정을 지피는 확실한 이정표가 설정되면 주저하거나 복잡하게 머무르지 않고 과감하게 추진하고 구체화해 나갑니다. 생각의 껍데기를 깨고 기획이라는 씨앗을 거대한 실체로 직접 파종하는 무시무시한 행동력은 저를 지탱하는 가장 거대한 가치입니다.",
+                quote: `"온몸을 전율하게 만드는 빛을 직접 머금은 자만이, 세상에 온기 가득한 주파수를 다시 전파할 수 있다." — 김수정, 발렌시아 기행 속 사색`
+            },
+            2: {
+                title: "아날로그 멜로디 수집가 (Point 02)",
+                sub: "쉽게 소멸되지 않을 브랜드 가치를 캐어내다",
+                body: "매일 수천 곡의 인스턴트 음악이 기성 제조공장처럼 뿜어져 나오는 메가 스트리밍 시대에, 저는 일부러 옛 명곡을 채굴하여 사색에 잠기곤 합니다. 요즘 노래 중에서도 해리 스타일스처럼 클래식한 정취를 현대의 세련된 선율로 고쳐 부르는 아티스트들을 극진히 아낍니다. 빠르게 유행하다가 한순간에 증발해 버리는 가볍고 파편화된 기획이 아닌, 수많은 동료가 긴 세월 프로젝트를 마친 후에도 마음 깊숙이 애정을 쏟을 수 있는 서비스의 원류와 고유한 영혼을 디자인하고 싶습니다.",
+                quote: `"완벽하고 편리하게 계산된 잡음 없는 무결점보다, 지글거리는 아날로그 노이즈 속의 따스한 불완전함을 편애합니다."`
+            },
+            3: {
+                title: "사색적인 독서가 (Point 03)",
+                sub: "텍스트에 뿌리를 박고 본질을 탐험하다",
+                body: "알베르 카뮈의 《이방인》이 던지는 차가운 질문 속에서 삶의 본질을 들여다보고, 황석영의 《개밥바라기 별》 속에 담긴 청춘의 서툰 방황과 성장의 문장들을 소중히 곱씹습니다. 책장 너머의 이야기에 깊이 몰입하며 인간과 삶을 사색하던 경험은, 저에게 흔들리지 않는 단단한 성찰의 힘과 세상을 깊게 바라보는 따뜻한 눈을 선물해 주었습니다.",
+                quote: `"나는 그 순간에 회한덩어리였던 나의 청춘과 작별하면서, 내가 얼마나 그 때를 사랑했는가를 깨달았다." — 《개밥바라기별》, 황석영`
+            },
+            4: {
+                title: "스토리텔러 (Point 04)",
+                sub: "일상의 소중함과 저마다의 반짝임",
+                body: "영화 《소울》과 드라마 《미생》처럼, 평범한 일상 속에서도 삶의 소중함과 저마다의 반짝이는 '불꽃'을 담아낸 이야기들을 아낍니다. 거창한 영웅담이 아니더라도, 인물들의 서툰 방황과 따뜻한 유대에 몰입하며 누구나 마음속에 품고 있는 저마다의 가치를 섬세하게 들여다봅니다. 수많은 이야기 속에서 인간을 향한 깊은 공감과 따뜻한 눈을 배웠기에, 저 역시 주변 동료들의 작은 이야기에도 온 마음을 다해 귀를 기울이고 싶습니다.",
+                quote: `"혼자서는 하나의 조각에 불과할지라도, 우리가 서로의 진심을 알아볼 때 비로소 가장 온전하고 아름다운 순간이 시작됩니다."`
+            },
+            5: {
+                title: "다정한 관찰자 (Point 05)",
+                sub: "심리학과 INFJ가 약속하는 '심리적 안전구역'",
+                body: "저는 인간 행동의 궤적과 내면의 깊은 심연을 해부하는 심리학을 수학했으며, 타인을 편견 없이 포용하고 통찰을 제공하는 사려 깊은 완충재 역할을 하는 INFJ입니다. 개발 협업을 이어가다 보면 팀원 간 성향 불일치나 기술적 대립으로 인해 감정의 파고가 요동치고 차갑게 소외되는 인원이 발생하곤 합니다. 이럴 때 저는 누구도 다치거나 침묵하지 않는 무한한 '심리적 무장지대(Safety Zone)'를 조성합니다. 누구나 자부심을 품고 자신의 색채를 유감없이 꺼내놓을 수 있도록 다정한 퍼실리테이터가 되겠습니다.",
+                quote: `"가장 고요하고 잔잔하게, 당신이 가장 빛나도록 보이지 않는 그늘 밑에서 손을 잡는 조율사가 될 것을 약속합니다."`
+            }
+        };
+
+        function openStrengthDetail(pointId) {
+            playSparkSound();
+            const detail = strengthDetails[pointId];
+            if (!detail) return;
+
+            detailTitle.innerText = detail.title;
+            detailSub.innerText = detail.sub;
+            detailBody.innerHTML = detail.body;
+            detailQuote.innerText = detail.quote;
+
+            detailModal.classList.remove('opacity-0', 'pointer-events-none');
+            detailModal.querySelector('div').classList.remove('scale-95');
+        }
+
+        function closeStrengthDetail() {
+            detailModal.classList.add('opacity-0', 'pointer-events-none');
+            detailModal.querySelector('div').classList.add('scale-95');
+        }
+
+        const ctaBtn = document.getElementById('ctaBtn');
+        const senderName = document.getElementById('senderName');
+        const coffeeForm = document.getElementById('coffeeForm');
+        
+        const msgModal = document.getElementById('msgModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+        // CTA 버튼 클릭 시 폼으로 부드럽게 유도 이동 및 포커스
+        ctaBtn.addEventListener('click', () => {
+            const formBox = document.getElementById('contactFormBox');
+            formBox.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                senderName.focus();
+            }, 800);
+        });
+
+        // 폼 전송 모사
+        coffeeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = senderName.value.trim();
+            const selectTopic = document.getElementById('connectTopic');
+            const topicLabel = selectTopic.options[selectTopic.selectedIndex].text;
+
+            // 모달 커스텀 메시지 설정
+            modalTitle.innerText = `📮 ${name}님의 메시지가 배달함에 도착했습니다.`;
+            modalBody.innerHTML = `수정님의 마음을 담는 메일함에 무사히 봉인되었습니다.<br><br><strong>[선택한 테마]: ${topicLabel}</strong><br><br>SSAFY 프로젝트를 함께 빛낼 따뜻한 불꽃으로 곧 대화 나눠요!`;
+
+            // 모달 열기 애니메이션
+            msgModal.classList.remove('opacity-0', 'pointer-events-none');
+            msgModal.querySelector('div').classList.remove('scale-95');
+
+            // 리셋
+            coffeeForm.reset();
+        });
+
+        // 모달 닫기
+        modalCloseBtn.addEventListener('click', () => {
+            msgModal.classList.add('opacity-0', 'pointer-events-none');
+            msgModal.querySelector('div').classList.add('scale-95');
+        });
+
+        // Intersection Observer 기반 스크롤 반응 애니메이션
+        const initScrollReveal = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            const observerOptions = {
+                root: null,
+                threshold: 0.15,
+                rootMargin: "0px 0px -40px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        observer.unobserve(entry.target); // 단 한 번만 실행되어 부드러운 유지가 가능하도록 함
+                    }
+                });
+            }, observerOptions);
+
+            reveals.forEach(el => observer.observe(el));
+        };
+
+        window.onload = function() {
+            resizeCanvas();
+            initParticles();
+            animateSparks();
+            initScrollReveal();
+
+            // 히어로 타이포그래피 등장 연출
+            const reveals = document.querySelectorAll('.reveal-text');
+            reveals.forEach(el => {
+                el.classList.add('active');
+            });
+        };
+
+        // 스크롤 시 헤더 컴팩트 모드 변경
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 40) {
+                header.classList.add('shadow-md', 'py-3');
+                header.classList.remove('py-4');
+            } else {
+                header.classList.remove('shadow-md', 'py-3');
+                header.classList.add('py-4');
+            }
+        });
+    </script>
+</body>
+</html>
